@@ -19,6 +19,7 @@ return [
     (new Extend\Routes('forum'))->get('/feed.xml', 'discussion-feed.feed', FeedController::class),
     (new Extend\Frontend('forum'))
         ->content(function (Document $document) {
-            $document->head[] = '<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Discussion Atom feed" />';
+            $document->head[] =
+                '<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Discussion Atom feed" />';
         })
 ];
