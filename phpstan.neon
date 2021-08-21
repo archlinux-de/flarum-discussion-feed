@@ -5,3 +5,6 @@ parameters:
 		- tests
 	excludes_analyse:
 		- vendor
+	ignoreErrors:
+		- '#Access to an undefined property Flarum\\Foundation\\Paths::\$public#'
+		- '#Call to an undefined method Illuminate\\Database\\Query\\Builder::whereVisibleTo\(\)#'
