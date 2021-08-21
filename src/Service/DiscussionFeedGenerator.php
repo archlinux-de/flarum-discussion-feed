@@ -2,41 +2,35 @@
 
 namespace ArchLinux\DiscussionFeed\Service;
 
-use ArchLinux\DiscussionFeed\Entity\Discussion;
-use Flarum\Discussion\DiscussionRepository;
 use Flarum\Foundation\Application;
-use Flarum\Http\UrlGenerator;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Flarum\User\User;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Database\Query\Builder;
 
 class DiscussionFeedGenerator
 {
     private ViewFactory $factory;
     private SettingsRepositoryInterface $settingsRepository;
     private Application $application;
+    private DiscussionFetcher $discussionFetcher;
 
     public function __construct(
         ViewFactory $factory,
         SettingsRepositoryInterface $settingsRepository,
-        Application $application
+        Application $application,
+        DiscussionFetcher $discussionFetcher
     ) {
         $this->factory = $factory;
         $this->settingsRepository = $settingsRepository;
         $this->application = $application;
+        $this->discussionFetcher = $discussionFetcher;
     }
 
-    /**
-     * @param Discussion[] $discussions
-     * @return string
-     */
-    public function generateFeed(array $discussions): string
+    public function generateFeed(): string
     {
         return $this->factory->make(
             'discussion-feed::feed',
             [
-                'discussions' => $discussions,
+                'discussions' => $this->discussionFetcher->fetchRecentDiscussions(),
                 'url' => $this->application->url(),
                 'title' => $this->settingsRepository->get('forum_title')
             ]

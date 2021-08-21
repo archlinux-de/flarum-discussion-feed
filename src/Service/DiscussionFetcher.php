@@ -5,7 +5,6 @@ namespace ArchLinux\DiscussionFeed\Service;
 use ArchLinux\DiscussionFeed\Entity\Discussion;
 use Flarum\Discussion\DiscussionRepository;
 use Flarum\User\User;
-use Illuminate\Database\Query\Builder;
 
 class DiscussionFetcher
 {
