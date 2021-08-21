@@ -25,6 +25,6 @@ class FeedController implements RequestHandlerInterface
     {
         $discussions = $this->discussionFetcher->fetchRecentDiscussions();
         $feed = $this->discussionFeedGenerator->generateFeed(iterator_to_array($discussions));
-        return new XmlResponse($feed);
+        return new XmlResponse($feed, headers: ['content-type' => 'application/atom+xml; charset=utf-8']);
     }
 }
