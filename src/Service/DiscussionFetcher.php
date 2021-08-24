@@ -5,19 +5,15 @@ namespace ArchLinux\DiscussionFeed\Service;
 use ArchLinux\DiscussionFeed\Entity\Author;
 use ArchLinux\DiscussionFeed\Entity\Discussion;
 use Flarum\Discussion\DiscussionRepository;
-use Flarum\Formatter\Formatter;
 use Flarum\Post\CommentPost;
-use Flarum\Post\Post;
 use Flarum\User\User;
 use Illuminate\Support\Stringable;
 use s9e\TextFormatter\Utils;
 
 class DiscussionFetcher
 {
-    public function __construct(
-        private DiscussionRepository $discussionRepository,
-        private Formatter $formatter
-    ) {
+    public function __construct(private DiscussionRepository $discussionRepository)
+    {
     }
 
     /**
