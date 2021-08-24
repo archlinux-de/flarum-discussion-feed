@@ -8,13 +8,8 @@ use Flarum\Foundation\Paths;
 
 class CreateDiscussionFeed extends AbstractCommand
 {
-    private DiscussionFeedGenerator $discussionFeedGenerator;
-    private Paths $paths;
-
-    public function __construct(DiscussionFeedGenerator $discussionFeedGenerator, Paths $paths)
+    public function __construct(private DiscussionFeedGenerator $discussionFeedGenerator, private Paths $paths)
     {
-        $this->discussionFeedGenerator = $discussionFeedGenerator;
-        $this->paths = $paths;
         parent::__construct();
     }
 

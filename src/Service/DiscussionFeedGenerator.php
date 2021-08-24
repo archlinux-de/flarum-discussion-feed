@@ -8,21 +8,12 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class DiscussionFeedGenerator
 {
-    private ViewFactory $factory;
-    private SettingsRepositoryInterface $settingsRepository;
-    private Application $application;
-    private DiscussionFetcher $discussionFetcher;
-
     public function __construct(
-        ViewFactory $factory,
-        SettingsRepositoryInterface $settingsRepository,
-        Application $application,
-        DiscussionFetcher $discussionFetcher
+        private ViewFactory $factory,
+        private SettingsRepositoryInterface $settingsRepository,
+        private Application $application,
+        private DiscussionFetcher $discussionFetcher
     ) {
-        $this->factory = $factory;
-        $this->settingsRepository = $settingsRepository;
-        $this->application = $application;
-        $this->discussionFetcher = $discussionFetcher;
     }
 
     public function generateFeed(): string

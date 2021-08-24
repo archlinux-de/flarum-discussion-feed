@@ -10,11 +10,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class FeedController implements RequestHandlerInterface
 {
-    private DiscussionFeedGenerator $discussionFeedGenerator;
-
-    public function __construct(DiscussionFeedGenerator $discussionFeedGenerator)
+    public function __construct(private DiscussionFeedGenerator $discussionFeedGenerator)
     {
-        $this->discussionFeedGenerator = $discussionFeedGenerator;
     }
 
     public function handle(Request $request): Response

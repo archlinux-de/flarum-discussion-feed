@@ -2,6 +2,7 @@
 
 namespace ArchLinux\DiscussionFeed\Test\Service;
 
+use ArchLinux\DiscussionFeed\Entity\Author;
 use ArchLinux\DiscussionFeed\Entity\Discussion;
 use ArchLinux\DiscussionFeed\Service\DiscussionFeedGenerator;
 use ArchLinux\DiscussionFeed\Service\DiscussionFetcher;
@@ -33,7 +34,15 @@ class DiscussionFeedGeneratorTest extends TestCase
             ->method('fetchRecentDiscussions')
             ->willReturn(
                 new \ArrayIterator([
-                                       new Discussion(1, 'test', 'TEST', new \DateTime(), new \DateTime())
+                                       new Discussion(
+                                           1,
+                                           'test',
+                                           'TEST',
+                                           new \DateTime(),
+                                           new \DateTime(),
+                                           '',
+                                           new Author('', '')
+                                       )
                                    ])
             );
 

@@ -8,11 +8,25 @@
     <?php /** @var \ArchLinux\DiscussionFeed\Entity\Discussion[] $discussions */ ?>
     @foreach ($discussions as $discussion)
         <entry>
-            <id>{{ $url }}/d/{{ $discussion->getId() }}</id>
-            <title>{{ $discussion->getTitle() }}</title>
-            <published>{{ $discussion->getCreatedAt()->format(DateTimeInterface::ATOM) }}</published>
-            <updated>{{ $discussion->getLastPostedAt()->format(DateTimeInterface::ATOM) }}</updated>
-            <link rel="alternate" href="{{ $url }}/d/{{ $discussion->getId() }}-{{ $discussion->getSlug() }}"/>
+            <id>{{ $url }}/d/{{ $discussion->id }}</id>
+            <title>{{ $discussion->title }}</title>
+            <published>{{ $discussion->createdAt->format(DateTimeInterface::ATOM) }}</published>
+            @if ($discussion->lastPostedAt)
+                <updated>{{ $discussion->lastPostedAt->format(DateTimeInterface::ATOM) }}</updated>
+            @endif
+            <link rel="alternate" href="{{ $url }}/d/{{ $discussion->id}}-{{ $discussion->slug }}"/>
+            @if ($discussion->author)
+                <author>
+                    <name>{{ $discussion->author->displayName }}</name>
+                    <uri>{{ $url }}/u/{{ $discussion->author->username }}</uri>
+                </author>
+            @else
+                <author>
+                    <?php /** @var \Flarum\Locale\Translator $translator */ ?>
+                    <name>{{ $translator->trans('core.lib.username.deleted_text') }}</name>
+                </author>
+            @endif
+            <summary type="text">{{ $discussion->content }}</summary>
         </entry>
     @endforeach
 </feed>
