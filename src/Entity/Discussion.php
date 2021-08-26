@@ -5,12 +5,12 @@ namespace ArchLinux\DiscussionFeed\Entity;
 class Discussion
 {
     public function __construct(
-        public int $id,
-        public string $slug,
+        public string $permalink,
         public string $title,
-        public \DateTime $createdAt,
-        public ?\DateTime $lastPostedAt,
-        public string $content,
+        public string $link,
+        public \DateTime $published,
+        public ?\DateTime $updated,
+        public string $summary,
         public ?Author $author,
     ) {
     }

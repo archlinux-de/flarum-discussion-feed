@@ -5,15 +5,22 @@ namespace ArchLinux\DiscussionFeed\Service;
 use ArchLinux\DiscussionFeed\Entity\Author;
 use ArchLinux\DiscussionFeed\Entity\Discussion;
 use Flarum\Discussion\DiscussionRepository;
+use Flarum\Http\SlugManager;
+use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
+use Flarum\Post\Post;
 use Flarum\User\User;
 use Illuminate\Support\Stringable;
 use s9e\TextFormatter\Utils;
+use Flarum\Discussion\Discussion as FlarumDiscussion;
 
 class DiscussionFetcher
 {
-    public function __construct(private DiscussionRepository $discussionRepository)
-    {
+    public function __construct(
+        private DiscussionRepository $discussionRepository,
+        private UrlGenerator $urlGenerator,
+        private SlugManager $slugManager,
+    ) {
     }
 
     /**
@@ -27,24 +34,65 @@ class DiscussionFetcher
             ->whereVisibleTo(new User())
             ->limit(50);
 
-        /** @var \Flarum\Discussion\Discussion $discussion */
+        /** @var FlarumDiscussion $discussion */
         foreach ($discussions->get() as $discussion) {
             yield new Discussion(
-                $discussion->id,
-                $discussion->slug,
+                $this->createPermalink($discussion),
                 $discussion->title,
+                $this->createLink($discussion),
                 $discussion->created_at,
                 $discussion->last_posted_at,
-                $discussion->firstPost instanceof CommentPost ? $this->createSummary($discussion->firstPost) : '...',
-                $discussion->user ? new Author($discussion->user->display_name, $discussion->user->username) : null
+                $this->createSummary($discussion->firstPost),
+                $this->createAuthor($discussion)
             );
         }
     }
 
-    private function createSummary(CommentPost $post): string
+    private function createSummary(?Post $post): string
     {
+        if (!$post instanceof CommentPost) {
+            return '...';
+        }
+
         return (new Stringable(Utils::removeFormatting($post->getParsedContentAttribute())))
             ->limit(280)
             ->replaceMatches('/\s+/', ' ');
+    }
+
+    private function createPermalink(FlarumDiscussion $discussion): string
+    {
+        return $this->urlGenerator
+            ->to('forum')
+            ->route(
+                'discussion',
+                ['id' => $discussion->id]
+            );
+    }
+
+    private function createLink(FlarumDiscussion $discussion): string
+    {
+        return $this->urlGenerator
+            ->to('forum')
+            ->route(
+                'discussion',
+                ['id' => $this->slugManager->forResource(FlarumDiscussion::class)->toSlug($discussion)]
+            );
+    }
+
+    private function createUserLink(User $user): string
+    {
+        return $this->urlGenerator
+            ->to('forum')
+            ->route(
+                'user',
+                ['username' => $this->slugManager->forResource(User::class)->toSlug($user)]
+            );
+    }
+
+    private function createAuthor(FlarumDiscussion $discussion): ?Author
+    {
+        return $discussion->user
+            ? new Author($discussion->user->display_name, $this->createUserLink($discussion->user))
+            : null;
     }
 }

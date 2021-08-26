@@ -35,13 +35,13 @@ class DiscussionFeedGeneratorTest extends TestCase
             ->willReturn(
                 new \ArrayIterator([
                                        new Discussion(
-                                           1,
-                                           'test',
+                                           'https://localhost/d/1',
                                            'TEST',
+                                           'https://localhost/d/1-test',
                                            new \DateTime(),
                                            new \DateTime(),
                                            '',
-                                           new Author('', '')
+                                           new Author('Bob', 'https://localhost/u/bob')
                                        )
                                    ])
             );

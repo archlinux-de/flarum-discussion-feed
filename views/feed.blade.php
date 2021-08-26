@@ -8,17 +8,17 @@
     <?php /** @var \ArchLinux\DiscussionFeed\Entity\Discussion[] $discussions */ ?>
     @foreach ($discussions as $discussion)
         <entry>
-            <id>{{ $url }}/d/{{ $discussion->id }}</id>
+            <id>{{ $discussion->permalink }}</id>
             <title>{{ $discussion->title }}</title>
-            <published>{{ $discussion->createdAt->format(DateTimeInterface::ATOM) }}</published>
-            @if ($discussion->lastPostedAt)
-                <updated>{{ $discussion->lastPostedAt->format(DateTimeInterface::ATOM) }}</updated>
+            <published>{{ $discussion->published->format(DateTimeInterface::ATOM) }}</published>
+            @if ($discussion->updated)
+                <updated>{{ $discussion->updated->format(DateTimeInterface::ATOM) }}</updated>
             @endif
-            <link rel="alternate" href="{{ $url }}/d/{{ $discussion->id}}-{{ $discussion->slug }}"/>
+            <link rel="alternate" href="{{ $discussion->link }}"/>
             @if ($discussion->author)
                 <author>
-                    <name>{{ $discussion->author->displayName }}</name>
-                    <uri>{{ $url }}/u/{{ $discussion->author->username }}</uri>
+                    <name>{{ $discussion->author->name }}</name>
+                    <uri>{{ $discussion->author->uri }}</uri>
                 </author>
             @else
                 <author>
@@ -26,7 +26,7 @@
                     <name>{{ $translator->trans('core.lib.username.deleted_text') }}</name>
                 </author>
             @endif
-            <summary type="text">{{ $discussion->content }}</summary>
+            <summary type="text">{{ $discussion->summary }}</summary>
         </entry>
     @endforeach
 </feed>
