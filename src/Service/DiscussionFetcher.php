@@ -9,6 +9,7 @@ use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
 use Flarum\Post\Post;
+use Flarum\User\Guest;
 use Flarum\User\User;
 use Illuminate\Support\Stringable;
 use s9e\TextFormatter\Utils;
@@ -31,7 +32,7 @@ class DiscussionFetcher
         $discussions = $this->discussionRepository
             ->query()
             ->orderByDesc('created_at')
-            ->whereVisibleTo(new User())
+            ->whereVisibleTo(new Guest())
             ->limit(50);
 
         /** @var FlarumDiscussion $discussion */
