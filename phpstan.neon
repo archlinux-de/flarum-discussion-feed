@@ -3,7 +3,7 @@ parameters:
 	paths:
 		- src
 		- tests
-	excludes_analyse:
+	excludePaths:
 		- vendor
 	ignoreErrors:
 		- '#Access to an undefined property Flarum\\Foundation\\Paths::\$public#'
