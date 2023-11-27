@@ -4,7 +4,7 @@
     "license": "GPL-3.0-or-later",
     "type": "flarum-extension",
     "require": {
-        "PHP": "^8.0",
+        "PHP": "^8.1",
         "flarum/core": "^1.6.0"
     },
     "autoload": {
@@ -29,7 +29,8 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0.2",
         "phpstan/phpstan-deprecation-rules": "^1.0.0",
-        "phpstan/phpstan-phpunit": "^1.0.0"
+        "phpstan/phpstan-phpunit": "^1.0.0",
+        "nesbot/carbon": "^2.62.1"
     },
     "config": {
         "allow-plugins": {
