@@ -18,9 +18,9 @@ use Flarum\Discussion\Discussion as FlarumDiscussion;
 class DiscussionFetcher
 {
     public function __construct(
-        private DiscussionRepository $discussionRepository,
-        private UrlGenerator $urlGenerator,
-        private SlugManager $slugManager,
+        private readonly DiscussionRepository $discussionRepository,
+        private readonly UrlGenerator $urlGenerator,
+        private readonly SlugManager $slugManager,
     ) {
     }
 

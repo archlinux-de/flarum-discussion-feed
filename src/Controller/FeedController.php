@@ -10,7 +10,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class FeedController implements RequestHandlerInterface
 {
-    public function __construct(private DiscussionFeedGenerator $discussionFeedGenerator)
+    public function __construct(private readonly DiscussionFeedGenerator $discussionFeedGenerator)
     {
     }
 

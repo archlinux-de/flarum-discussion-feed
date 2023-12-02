@@ -9,10 +9,10 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 class DiscussionFeedGenerator
 {
     public function __construct(
-        private ViewFactory $factory,
-        private SettingsRepositoryInterface $settingsRepository,
-        private Application $application,
-        private DiscussionFetcher $discussionFetcher
+        private readonly ViewFactory $factory,
+        private readonly SettingsRepositoryInterface $settingsRepository,
+        private readonly Application $application,
+        private readonly DiscussionFetcher $discussionFetcher
     ) {
     }
 
