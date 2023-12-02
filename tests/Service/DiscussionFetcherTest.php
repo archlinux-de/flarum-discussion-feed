@@ -10,7 +10,6 @@ use Flarum\Http\RouteCollectionUrlGenerator;
 use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
-use Flarum\Post\Post;
 use Flarum\User\User;
 use Illuminate\Database\Query\Builder;
 use PHPUnit\Framework\Constraint\IsAnything;
@@ -61,7 +60,7 @@ class DiscussionFetcherTest extends TestCase
             ->willReturn([$discussion]);
         $builder->expects($this->any())
             ->method(new IsAnything())
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
         $discussionRepository = $this->createMock(DiscussionRepository::class);
         $discussionRepository
