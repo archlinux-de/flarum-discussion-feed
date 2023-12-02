@@ -17,7 +17,7 @@ class CreateDiscussionFeed extends AbstractCommand
 
     protected function configure(): void
     {
-        $this->setName('dioscussion-feed:create')->setDescription('Create discussion atom feed');
+        $this->setName('discussion-feed:create')->setDescription('Create discussion atom feed');
     }
 
     protected function fire(): void
