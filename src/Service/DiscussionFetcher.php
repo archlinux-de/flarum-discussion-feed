@@ -11,6 +11,7 @@ use Flarum\Post\CommentPost;
 use Flarum\Post\Post;
 use Flarum\User\Guest;
 use Flarum\User\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Stringable;
 use s9e\TextFormatter\Utils;
 use Flarum\Discussion\Discussion as FlarumDiscussion;
@@ -29,7 +30,8 @@ class DiscussionFetcher
      */
     public function fetchRecentDiscussions(): \Traversable
     {
-        $discussions = $this->discussionRepository
+        /** @var Builder $discussions */
+        $discussions = $this->discussionRepository // @phpstan-ignore method.nonObject
             ->query()
             ->orderByDesc('created_at')
             ->whereVisibleTo(new Guest())
