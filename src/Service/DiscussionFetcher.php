@@ -11,7 +11,7 @@ use Flarum\Post\CommentPost;
 use Flarum\Post\Post;
 use Flarum\User\Guest;
 use Flarum\User\User;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Stringable;
 use s9e\TextFormatter\Utils;
 use Flarum\Discussion\Discussion as FlarumDiscussion;
@@ -30,12 +30,12 @@ class DiscussionFetcher
      */
     public function fetchRecentDiscussions(): \Traversable
     {
-        /** @var Builder $discussions */
-        $discussions = $this->discussionRepository // @phpstan-ignore method.nonObject
+        /** @var Builder<FlarumDiscussion> $discussions */
+        $discussions = $this->discussionRepository
             ->query()
             ->orderByDesc('created_at')
             ->whereVisibleTo(new Guest())
-            ->limit(50); // @phpstan-ignore method.nonObject
+            ->limit(50);
 
         /** @var FlarumDiscussion $discussion */
         foreach ($discussions->get() as $discussion) {
@@ -57,7 +57,12 @@ class DiscussionFetcher
             return '...';
         }
 
-        return (new Stringable(Utils::removeFormatting($post->getParsedContentAttribute())))
+        $content = $post->getParsedContentAttribute();
+        if ($content === null || $content === '') {
+            return '...';
+        }
+
+        return (new Stringable(Utils::removeFormatting($content)))
             ->limit(280)
             ->replaceMatches('/\s+/', ' ');
     }

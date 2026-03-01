@@ -11,13 +11,25 @@ use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
 use Flarum\User\User;
-use Illuminate\Database\Query\Builder;
-use PHPUnit\Framework\Constraint\IsAnything;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class DiscussionFetcherTest extends TestCase
 {
-    public function testFetchRecentDiscussions(): void
+    /** @return array<string, array{?string, string}> */
+    public static function summaries(): array
+    {
+        return [
+            'formatted content' => ['<foo>bar</foo>', 'bar'],
+            'missing content' => [null, '...'],
+            'empty content' => ['', '...'],
+        ];
+    }
+
+    #[DataProvider('summaries')]
+    public function testFetchRecentDiscussions(?string $content, string $summary): void
     {
         $user = $this->createMock(User::class);
         $user
@@ -35,7 +47,7 @@ class DiscussionFetcherTest extends TestCase
         $post
             ->expects($this->atLeastOnce())
             ->method('getParsedContentAttribute')
-            ->willReturn('<foo>bar</foo>');
+            ->willReturn($content);
 
         $discussion = $this->createMock(Discussion::class);
         $discussion
@@ -57,10 +69,8 @@ class DiscussionFetcherTest extends TestCase
         $builder
             ->expects($this->atLeastOnce())
             ->method('get')
-            ->willReturn([$discussion]);
-        $builder->expects($this->any())
-            ->method(new IsAnything())
-            ->willReturnSelf();
+            ->willReturn(new Collection([$discussion]));
+        $builder->method('__call')->willReturnSelf();
 
         $discussionRepository = $this->createMock(DiscussionRepository::class);
         $discussionRepository
@@ -79,7 +89,7 @@ class DiscussionFetcherTest extends TestCase
             ->method('to')
             ->willReturn($routeCollectionUrlGenerator);
 
-        $slugManager = $this->createMock(SlugManager::class);
+        $slugManager = $this->createStub(SlugManager::class);
 
         $discussionFetcher = new DiscussionFetcher($discussionRepository, $urlGenerator, $slugManager);
 
@@ -88,7 +98,7 @@ class DiscussionFetcherTest extends TestCase
 
         $this->assertNotEmpty($recentDiscussions);
         $this->assertEquals('Title', $recentDiscussions[0]->title);
-        $this->assertEquals('bar', $recentDiscussions[0]->summary);
+        $this->assertEquals($summary, $recentDiscussions[0]->summary);
         $this->assertNotNull($recentDiscussions[0]->author);
         $this->assertEquals('Bob Smith', $recentDiscussions[0]->author->name);
     }

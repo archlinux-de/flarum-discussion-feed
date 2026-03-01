@@ -5,6 +5,3 @@ parameters:
 		- tests
 	excludePaths:
 		- vendor
-	ignoreErrors:
-		- '#Call to an undefined method Illuminate\\Database\\Query\\Builder::whereVisibleTo\(\)#'
-	reportUnmatchedIgnoredErrors: false

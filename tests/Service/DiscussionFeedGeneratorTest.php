@@ -48,8 +48,8 @@ class DiscussionFeedGeneratorTest extends TestCase
 
         $discussionFeedGenerator = new DiscussionFeedGenerator(
             $viewFactory,
-            $this->createMock(SettingsRepositoryInterface::class),
-            $this->createMock(Application::class),
+            $this->createStub(SettingsRepositoryInterface::class),
+            $this->createStub(Application::class),
             $discussionFetcher
         );
 

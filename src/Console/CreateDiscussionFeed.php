@@ -20,11 +20,13 @@ class CreateDiscussionFeed extends AbstractCommand
         $this->setName('discussion-feed:create')->setDescription('Create discussion atom feed');
     }
 
-    protected function fire(): void
+    protected function fire(): int
     {
         file_put_contents(
             $this->paths->public . DIRECTORY_SEPARATOR . 'feed.xml',
             $this->discussionFeedGenerator->generateFeed()
         );
+
+        return self::SUCCESS;
     }
 }
