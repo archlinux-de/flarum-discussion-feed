@@ -35,7 +35,7 @@ class DiscussionFetcher
             ->query()
             ->orderByDesc('created_at')
             ->whereVisibleTo(new Guest())
-            ->limit(50);
+            ->limit(50); // @phpstan-ignore method.nonObject
 
         /** @var FlarumDiscussion $discussion */
         foreach ($discussions->get() as $discussion) {
