@@ -10,6 +10,7 @@ use Flarum\Http\RouteCollectionUrlGenerator;
 use Flarum\Http\SlugManager;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\CommentPost;
+use Flarum\User\Guest;
 use Flarum\User\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -70,7 +71,19 @@ class DiscussionFetcherTest extends TestCase
             ->expects($this->atLeastOnce())
             ->method('get')
             ->willReturn(new Collection([$discussion]));
-        $builder->method('__call')->willReturnSelf();
+        $builder
+            ->expects($this->exactly(3))
+            ->method('__call')
+            ->willReturnCallback(function (string $method, array $arguments) use ($builder): Builder {
+                match ($method) {
+                    'orderByDesc' => $this->assertSame(['created_at'], $arguments),
+                    'whereVisibleTo' => $this->assertInstanceOf(Guest::class, $arguments[0]),
+                    'limit' => $this->assertSame([50], $arguments),
+                    default => $this->fail('Unexpected query method: ' . $method),
+                };
+
+                return $builder;
+            });
 
         $discussionRepository = $this->createMock(DiscussionRepository::class);
         $discussionRepository

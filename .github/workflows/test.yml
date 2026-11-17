@@ -24,7 +24,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: mbstring
+          extensions: mbstring, pdo_sqlite
           coverage: none
       - name: Install packages
         run: just install-${{ matrix.package-version }}
