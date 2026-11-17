@@ -5,6 +5,7 @@
     "type": "flarum-extension",
     "require": {
         "flarum/core": "^2.0.0",
+        "illuminate/support": "^13.11",
         "php": "^8.3"
     },
     "autoload": {
@@ -36,8 +37,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.1.1",
         "nesbot/carbon": "^3.8",
-        "flarum/phpstan": "^2.0",
-        "illuminate/support": "^13.11"
+        "flarum/phpstan": "^2.0"
     },
     "config": {
         "allow-plugins": {
